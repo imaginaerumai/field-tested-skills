@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+#
+# purge-stress: reclaim CPU/heat by killing leaked headless Chromium.
+#
+# Targets (union):
+#   1. Orphaned agent-browser Chromium trees  (cmdline contains "agent-browser-chrome")
+#   2. ANY headless Chromium/Chrome           (cmdline contains "--headless" + chrome/chromium)
+#
+# It never touches a headed browser, your agent, or your IDE.
+# Works on macOS (BSD ps) and Linux (procps). bash 3.2+.
+#
+# Usage:
+#   purge-stress            Show offenders, then kill them immediately.
+#   purge-stress -n         Dry-run: list what WOULD be killed, kill nothing.
+#   purge-stress --dry-run  Same as -n.
+#   purge-stress -h         Help.
+#
+# Exit codes: 0 = done or nothing to do, 1 = a process survived SIGKILL, 2 = bad usage.
+
+set -u
+
+DRY_RUN=0
+
+case "${1:-}" in
+  -n|--dry-run) DRY_RUN=1 ;;
+  -h|--help)
+    sed -n '2,18p' "$0" | sed 's/^# \{0,1\}//'
+    exit 0
+    ;;
+  "") ;;
+  *)
+    echo "purge-stress: unknown option '$1' (try -h)" >&2
+    exit 2
+    ;;
+esac
+
+SELF_PID=$$
+
+# Alive means running. A zombie (stat Z) has exited and holds no CPU; kill -0 still succeeds on it.
+is_alive() {
+  kill -0 "$1" 2>/dev/null || return 1
+  case "$(ps -o stat= -p "$1" 2>/dev/null)" in *Z*) return 1 ;; esac
+  return 0
+}
+
+# --- Collect matching PIDs -------------------------------------------------
+# Classify every process by its full command line. Fields: pid pcpu rss command...
+
+TMP="$(mktemp "${TMPDIR:-/tmp}/purge-stress.XXXXXX")"
+trap 'rm -f "$TMP"' EXIT
+
+# One awk pass over ps. Forking per process costs seconds on a machine that is already hot.
+ps -A -o pid=,pcpu=,rss=,command= 2>/dev/null | awk -v self="$SELF_PID" '
+{
+  pid = $1; cpu = $2; rss = $3
+  cmd = $0; sub(/^ *[0-9]+ +[0-9.]+ +[0-9]+ +/, "", cmd)
+  if (pid == self || cmd ~ /purge-stress/) next
+  reason = ""
+  if (cmd ~ /agent-browser-chrome/) reason = "agent-browser leak"
+  else if (cmd ~ /--headless/ && cmd ~ /(Chromium|Google Chrome|\/chrome|chrome-headless)/) reason = "headless chromium"
+  if (reason == "") next
+  exe = cmd; sub(/ .*/, "", exe); n = split(exe, parts, "/"); label = parts[n]
+  if (cmd ~ /--type=gpu-process/) label = label " (GPU)"
+  else if (cmd ~ /--type=renderer/) label = label " (renderer)"
+  else if (cmd ~ /--type=utility/) label = label " (utility)"
+  printf "%s\t%s\t%s\t%s\t%s\n", pid, cpu, rss, reason, label
+}' >"$TMP"
+
+if [ ! -s "$TMP" ]; then
+  echo "purge-stress: nothing to purge. No leaked or headless Chromium found."
+  exit 0
+fi
+
+# --- Report ----------------------------------------------------------------
+count=$(wc -l < "$TMP" | tr -d ' ')
+sum_cpu=$(awk -F'\t' '{s+=$2} END{printf "%.1f", s}' "$TMP")
+sum_mb=$(awk -F'\t' '{s+=$3} END{printf "%.0f", s/1024}' "$TMP")
+
+echo "purge-stress: found $count target process(es), ~${sum_cpu}% CPU, ~${sum_mb} MB RAM"
+echo "-------------------------------------------------------------------"
+printf '%-7s %6s %8s  %-18s %s\n' "PID" "%CPU" "RSS(MB)" "REASON" "PROCESS"
+sort -t"$(printf '\t')" -k2 -nr "$TMP" | while IFS="$(printf '\t')" read -r pid cpu rss reason label; do
+  mb=$(awk "BEGIN{printf \"%.0f\", $rss/1024}")
+  printf '%-7s %6s %8s  %-18s %s\n' "$pid" "$cpu" "$mb" "$reason" "$label"
+done
+echo "-------------------------------------------------------------------"
+
+PIDS=$(cut -f1 "$TMP" | tr '\n' ' ')
+
+if [ "$DRY_RUN" -eq 1 ]; then
+  echo "DRY-RUN: nothing killed. Re-run without -n to kill the above."
+  exit 0
+fi
+
+# --- Kill: TERM, then KILL survivors --------------------------------------
+echo "Killing (SIGTERM)..."
+for p in $PIDS; do kill -TERM "$p" 2>/dev/null; done
+sleep 1
+
+survivors=""
+for p in $PIDS; do
+  if is_alive "$p"; then survivors="$survivors $p"; fi
+done
+
+if [ -n "$survivors" ]; then
+  echo "Force-killing survivors (SIGKILL):$survivors"
+  for p in $survivors; do kill -KILL "$p" 2>/dev/null; done
+  sleep 1
+fi
+
+# Final check
+still=""
+for p in $PIDS; do
+  if is_alive "$p"; then still="$still $p"; fi
+done
+
+if [ -n "$still" ]; then
+  echo "Could not kill:$still (try: sudo kill -9$still)"
+  exit 1
+fi
+
+echo "Done. Reclaimed ~${sum_cpu}% CPU and ~${sum_mb} MB RAM."
+echo "   Tip: run 'uptime' in a few seconds to watch the load average drop."
+exit 0

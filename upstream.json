@@ -1,0 +1,129 @@
+{
+  "$comment": "Derived skills. `node scripts/port.mjs` regenerates the upstream half of each SKILL.md from the pinned commit and keeps everything from '## Field notes' down. Bump `commit` to re-sync.",
+  "sources": {
+    "mattpocock": {
+      "repo": "mattpocock/skills",
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "author": "Matt Pocock",
+      "license": "MIT",
+      "licenseFile": "licenses/mattpocock-skills.MIT.txt"
+    },
+    "pstack": {
+      "repo": "cursor/plugins",
+      "commit": "d457567332aa6989e753ea289f30ea2bfbc80bc0",
+      "author": "Lauren Tan (poteto)",
+      "license": "MIT",
+      "licenseFile": "licenses/pstack.MIT.txt"
+    },
+    "humanizer": {
+      "repo": "blader/humanizer",
+      "commit": "8c307f367c91bd974002f10f2be2965d642c13df",
+      "author": "Siqi Chen (blader)",
+      "license": "MIT",
+      "licenseFile": "licenses/humanizer.MIT.txt"
+    },
+    "agent-browser": {
+      "repo": "vercel-labs/agent-browser",
+      "commit": "dac13bb87468fe9d74a040d862720f6cc17a9565",
+      "author": "Vercel Labs",
+      "license": "Apache-2.0",
+      "licenseFile": "licenses/agent-browser.Apache-2.0.txt"
+    }
+  },
+  "skills": [
+    {
+      "name": "retro",
+      "category": "engineering",
+      "source": "mattpocock",
+      "path": "skills/engineering/retro",
+      "edits": [
+        {
+          "find": "Call the Skill tool with `writing-for-agents` for the writing style guide.",
+          "replace": "Load the `writing-for-agents` skill for the writing style guide.",
+          "reason": "agent-neutral: not every agent has a tool named Skill"
+        }
+      ],
+      "description": "Conduct a retrospective on a coding session. Use after a substantial session to turn the agent's mistakes into checks, navigation pointers, and leaner steering files."
+    },
+    {
+      "name": "grilling",
+      "category": "engineering",
+      "source": "mattpocock",
+      "path": "skills/productivity/grilling",
+      "edits": []
+    },
+    {
+      "name": "grill-me",
+      "category": "engineering",
+      "source": "mattpocock",
+      "path": "skills/productivity/grill-me",
+      "description": "A relentless interview to sharpen a plan or design. Use when the user says 'grill me' or wants a plan stress-tested before building.",
+      "edits": [
+        {
+          "find": "Call the Skill tool with \"grilling\".",
+          "replace": "Load the `grilling` skill and follow it.",
+          "reason": "agent-neutral wording"
+        }
+      ]
+    },
+    {
+      "name": "diagnosing-bugs",
+      "category": "engineering",
+      "source": "mattpocock",
+      "path": "skills/engineering/diagnosing-bugs",
+      "edits": []
+    },
+    {
+      "name": "handoff",
+      "category": "engineering",
+      "source": "mattpocock",
+      "path": "skills/productivity/handoff",
+      "description": "Compact the current conversation into a handoff document for another agent to pick up. Use when ending a session mid-task or passing work to a fresh agent.",
+      "edits": [
+        {
+          "find": "naming which skills the next agent should call the Skill tool for.",
+          "replace": "naming which skills the next agent should load.",
+          "reason": "agent-neutral wording"
+        }
+      ]
+    },
+    {
+      "name": "writing-for-agents",
+      "category": "writing",
+      "source": "mattpocock",
+      "path": "skills/productivity/writing-for-agents",
+      "edits": []
+    },
+    {
+      "name": "unslop",
+      "category": "writing",
+      "source": "pstack",
+      "path": "pstack/skills/unslop",
+      "description": "Cut AI tells from any writing. Use for every reply, doc, commit message, or PR description before it ships.",
+      "edits": []
+    },
+    {
+      "name": "humanizer",
+      "category": "writing",
+      "source": "humanizer",
+      "path": ".",
+      "include": [
+        "SKILL.md"
+      ],
+      "edits": []
+    },
+    {
+      "name": "agent-browser",
+      "category": "browser",
+      "source": "agent-browser",
+      "path": "skills/agent-browser",
+      "edits": [
+        {
+          "find": "allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)",
+          "replace": "allowed-tools: Bash(agent-browser:*) Bash(npx agent-browser:*)",
+          "reason": "spec requires space-separated allowed-tools"
+        }
+      ]
+    }
+  ]
+}
