@@ -15,13 +15,6 @@
       "license": "MIT",
       "licenseFile": "licenses/pstack.MIT.txt"
     },
-    "humanizer": {
-      "repo": "blader/humanizer",
-      "commit": "8c307f367c91bd974002f10f2be2965d642c13df",
-      "author": "Siqi Chen (blader)",
-      "license": "MIT",
-      "licenseFile": "licenses/humanizer.MIT.txt"
-    },
     "agent-browser": {
       "repo": "vercel-labs/agent-browser",
       "commit": "dac13bb87468fe9d74a040d862720f6cc17a9565",
@@ -100,16 +93,6 @@
       "source": "pstack",
       "path": "pstack/skills/unslop",
       "description": "Cut AI tells from any writing. Use for every reply, doc, commit message, or PR description before it ships.",
-      "edits": []
-    },
-    {
-      "name": "humanizer",
-      "category": "writing",
-      "source": "humanizer",
-      "path": ".",
-      "include": [
-        "SKILL.md"
-      ],
       "edits": []
     },
     {

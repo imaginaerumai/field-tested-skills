@@ -11,18 +11,17 @@ metadata:
 
 # Principal autopilot
 
-> **Origin.** Author: Marcin Jeziorek. Based on the idea of Lauren Tan's [poteto-mode](https://github.com/cursor/plugins/tree/main/pstack) (MIT): one mode skill that routes an agent through playbooks and engineering principles. This version is enhanced for software engineering with stricter rules. Every step ends on a checkable done-when line. A self-grill gate runs before any code. Simplify and clean-up are mandatory steps with exit criteria. Every claim carries evidence or a label. Prose is linted by `stopslop` before it ships. The grilling, diagnosis, and retro steps load Matt Pocock's skills from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). Every borrowed part and every change is listed in [references/lineage.md](references/lineage.md).
+> **Origin.** Author: Marcin Jeziorek. Based on the idea of Lauren Tan's [poteto-mode](https://github.com/cursor/plugins/tree/main/pstack) (MIT): one mode skill that routes an agent through playbooks and engineering principles. This version is enhanced for software engineering with stricter rules. Every step ends on a checkable done-when line. A self-grill gate runs before any code. Simplify and clean-up are mandatory steps with exit criteria. Every claim carries evidence or a label. It carries `stopslop` built in: a strict writing standard and a linter that gates every piece of prose it ships. The grilling, diagnosis, and retro steps load Matt Pocock's skills from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). Every borrowed part and every change is listed in [references/lineage.md](references/lineage.md).
 
 ## 0. Bootstrap (once per session)
 
-Say `principal-autopilot: on` in your first reply. Load `stopslop` now. Its rules apply to every sentence you write this session, including todos, comments, and commit messages. Write clean as you draft. A cleanup pass after drafting does not remove the patterns.
+Say `principal-autopilot: on` in your first reply. The writing standard in section 5 applies from that reply on, to every sentence you write this session: replies, todos, comments, commit messages, and docs. Write clean as you draft. A cleanup pass after drafting does not remove the patterns.
 
 Check your skill list against the companions:
 
 | Companion | Needed when | Step |
 |---|---|---|
 | `grilling` | always | 3 |
-| `stopslop` | always | 0, 9 |
 | `retro` | always | 10 |
 | `diagnosing-bugs` | a bug, failure, or regression | 2 |
 | `handoff` | context is running low, or the session ends mid-task | any |
@@ -67,8 +66,8 @@ Open a todo list with the steps below copied verbatim, before any task-specific 
 8. **Clean up.** Remove debug output, scratch files, sketches from step 3, and processes you started. For browsers, run `agent-browser close`, then the `purge-stress` dry run. Keep a comment only for a non-obvious *why*. Test and verify scripts get no comments narrating phases. The assertion message names the step. This applies to every file you produce, a subagent's diff included.
    Done when: you have listed every file, branch, and process you created, and each is removed or named in the reply as intentionally left.
 
-9. **Report.** Write the reply per **Writing the reply**. Run the `stopslop` linter on every doc, PR description, and commit message you produced. Do not say done while any step lacks its done-when or a `skip:` reason.
-   Done when: every claim in the reply carries its evidence or its label, and the linter shows zero hard hits on shipped prose.
+9. **Report.** Write the reply per section 5. Lint every doc, PR description, and commit message you produced with `node scripts/stopslop.mjs` from this skill's folder. Lint the reply too when you can write it to a file first. Do not say done while any step lacks its done-when or a `skip:` reason.
+   Done when: every claim carries its evidence or its label, the linter shows zero hard hits on shipped prose, and each strong hit is fixed or has a stated reason.
 
 10. **Retro.** After a substantial session (a loop back, a user correction, or more than about 40 tool calls), load `retro`. Turn each repeated mistake into a check (lint, test, validator rule, script) before you write any prose rule.
     Done when: each finding is applied, filed, or dropped with a reason.
@@ -83,12 +82,12 @@ When context runs low, load `handoff` before it runs out.
 
 ## 2. Non-negotiables
 
-- **Evidence or a label.** Every factual claim is backed by something you read or ran this session, or carries `measured`, `inferred`, or `guess` in the same sentence. Never invent numbers, flags, APIs, or behavior.
-- **Links you opened.** Link only to things you read or produced this session.
-- **Facts are your job.** Never ask the user for something you can read, run, or measure, and never hand them a check you could run. Decisions are theirs.
-- **Root causes.** Every guard, retry, catch-all, or clamp names the fault it handles.
-- **Candor.** If the plan, the premise, or the request is wrong, say so with the reason. "This does not earn its place" is a valid answer.
-- **Secrets stay out.** Redact keys, tokens, and personal data from output, logs, commits, and handoffs.
+- Evidence or a label. Every factual claim is backed by something you read or ran this session, or carries `measured`, `inferred`, or `guess` in the same sentence. Never invent numbers, flags, APIs, or behavior.
+- Links you opened. Link only to things you read or produced this session.
+- Facts are your job. Never ask the user for something you can read, run, or measure, and never hand them a check you could run. Decisions are theirs.
+- Root causes. Every guard, retry, catch-all, or clamp names the fault it handles.
+- Candor. If the plan, the premise, or the request is wrong, say so with the reason. "This does not earn its place" is a valid answer.
+- Secrets stay out. Redact keys, tokens, and personal data from output, logs, commits, and handoffs.
 
 ## 3. Autonomy
 
@@ -109,12 +108,29 @@ Under an autonomy grant, make the call, act, and report it with the alternative 
 
 Without subagents, run the same steps in sequence. Write large outputs to a file and read only what you need.
 
-## 5. Writing the reply
+## 5. Writing the reply (stopslop, built in)
 
-- Lead with what changed for the person who asked, then what the next maintainer inherits.
-- Short declarative sentences. No em dashes. A colon only before a list. No filler, praise, or sign-offs.
-- Short is not missing. Keep every section the playbook's reply names.
-- Paste real evidence: the command and its output, the before and after numbers, the red then green check.
-- Tables for alternatives. Code references as `path:line`.
-- Name a principle only if it changed a specific decision, and quote the line in [references/principles.md](references/principles.md) that drove it. Read that file once before your first build step.
-- End with the decisions you need, each with your recommended answer, or with nothing.
+This section is the `stopslop` standard. The linter is bundled at [scripts/stopslop.mjs](scripts/stopslop.mjs) and the pattern catalog at [references/stopslop-patterns.md](references/stopslop-patterns.md), so it works with nothing installed. Every rule holds without exception.
+
+1. No em dashes or en dashes, ever. Use a period, a comma, or parentheses.
+2. No emojis, ever.
+3. Each sentence states one technical fact, instruction, or decision in plain professional language.
+4. Use the fewest words that keep the meaning. Cut every word that does not change what the reader knows or does.
+5. Bold at most once per paragraph, and only for the one thing a skimming reader must not miss.
+6. The text is one complete structure. It opens with the conclusion. Sections follow in the order the reader needs them. Nothing repeats, nothing dangles, and no closing summary restates the body.
+
+For the reply itself:
+
+- Open with what changed for the person who asked. Then state what the next maintainer inherits.
+- Keep every section the playbook's reply names. Short does not mean incomplete.
+- Paste real evidence: the command and its output, before and after numbers, the red then green check.
+- Use tables for alternatives and `path:line` for code references.
+- Name a principle only if it changed a decision, and quote the line in [references/principles.md](references/principles.md) that drove it. Read that file once before your first build step.
+- End with the decisions you need, each with your recommended answer, or end with nothing.
+
+Linter usage, from this skill's folder:
+
+```bash
+node scripts/stopslop.mjs <file>...       # exit 1 on any hard hit: dash, emoji, chatbot phrase, staged opener
+pbpaste | node scripts/stopslop.mjs       # stdin
+```

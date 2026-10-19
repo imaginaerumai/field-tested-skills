@@ -71,5 +71,5 @@ Rule numbers are stable ids that other skills cite. A removed rule leaves a gap.
 
 ## Field notes
 
-1. **Pair it with `humanizer`, do not stack them.** `unslop` is a short rule list for the agent's own replies and commit text. `humanizer` is a rewrite procedure for longer prose. Use one per surface.
+1. **Prefer `stopslop` in this repo.** `stopslop` keeps these rules, adds a linter that gates shipped text, and bans dashes and emojis without exception. Use `unslop` alone only where you cannot run Node.
 2. **Agent-facing prose is a different job.** For skills and `AGENTS.md`, `writing-for-agents` overrides style choices here.

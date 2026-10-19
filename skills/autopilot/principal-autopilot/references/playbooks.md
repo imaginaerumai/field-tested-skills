@@ -55,8 +55,8 @@ Structure changes, behavior does not.
 READMEs, design docs, pages, PR descriptions, skills.
 
 - Step 2: read what exists. Update instead of duplicating.
-- Step 4: for agent-facing text (skills, `AGENTS.md`) load `writing-for-agents`. For human-facing text, follow `stopslop`.
-- Step 5: proof is that every technical claim traces to something read or run, and the `stopslop` linter shows zero hard hits on the exact payload.
+- Step 4: for agent-facing text (skills, `AGENTS.md`) load `writing-for-agents`. For human-facing text, follow section 5 of `SKILL.md`.
+- Step 5: proof is that every technical claim traces to something read or run, and `scripts/stopslop.mjs` shows zero hard hits on the exact payload.
 - Before overwriting a published page, fetch its current version. The user may have edited it.
 
 ## Autonomous run

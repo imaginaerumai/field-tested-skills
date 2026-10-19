@@ -6,7 +6,7 @@
 
 **Foundational thinking.** Get the data shape right before writing logic. Define the core types, trace every access pattern, pick structures that match the main paths. Scaffold that helps every later phase (CI, tests, shared types) goes first.
 
-**Model the domain.** When logic branches a lot or repeats a shape assumption across files, encode the domain in one structure: a state machine instead of scattered booleans, a table or registry instead of a branch per case, a typed model instead of repeated checks.
+**Model the domain.** When logic branches a lot or repeats a shape assumption across files, encode the domain in one structure. Use a state machine instead of scattered booleans, a table instead of a branch per case, and a typed model instead of repeated checks.
 
 **Laziness protocol.** The smallest change that solves the problem. Put each decision in one place. Fewer lines beat elegant boilerplate.
 

@@ -106,6 +106,16 @@ for (const file of walk(ROOT).filter((f) => !/\/(\.git|node_modules|licenses)\//
   }
 }
 
+// Bundled copies: principal-autopilot ships stopslop so it works with no install. The copies must not drift.
+const BUNDLED = [
+  ["skills/writing/stopslop/scripts/stopslop.mjs", "skills/autopilot/principal-autopilot/scripts/stopslop.mjs"],
+  ["skills/writing/stopslop/references/patterns.md", "skills/autopilot/principal-autopilot/references/stopslop-patterns.md"],
+];
+for (const [src, copy] of BUNDLED) {
+  const a = join(ROOT, src), b = join(ROOT, copy);
+  if (!existsSync(b) || readFileSync(a, "utf8") !== readFileSync(b, "utf8")) fail(b, `must be a byte-identical copy of ${src}. Run: cp ${src} ${copy}`);
+}
+
 if (errors.length) {
   console.error(errors.map((e) => `✗ ${e}`).join("\n"));
   console.error(`\n${errors.length} problem(s) in ${skillFiles.length} skills.`);

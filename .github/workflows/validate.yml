@@ -13,4 +13,4 @@ jobs:
           node-version: 22
       - run: node scripts/validate.mjs
       - run: node --test scripts/*.test.mjs
-      - run: node skills/writing/stopslop/scripts/stopslop.mjs README.md docs/*.md skills/autopilot/principal-autopilot/SKILL.md skills/writing/stopslop/SKILL.md skills/ops/purge-stress/SKILL.md
+      - run: node skills/writing/stopslop/scripts/stopslop.mjs README.md AGENTS.md docs/*.md skills/autopilot/principal-autopilot/SKILL.md skills/autopilot/principal-autopilot/references/*.md skills/writing/stopslop/SKILL.md skills/writing/stopslop/references/*.md skills/ops/purge-stress/SKILL.md

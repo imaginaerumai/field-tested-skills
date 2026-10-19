@@ -2,69 +2,69 @@
 
 Agent skills I use every day, kept only where real session logs show they earn their place.
 
-Most skill collections are written from intuition. These are tuned from data. I mined about 600 of my own coding-agent sessions (February to October 2026) for the moments a skill failed: a user correction, a repeated tool error, a leaked process. Each fix lives in the skill as a **field note** with the evidence attached. The method is in [docs/field-data.md](docs/field-data.md).
+I mined about 600 of my own coding-agent sessions (February to October 2026) for the moments a skill failed: a user correction, a repeated tool error, a leaked process. Each fix lives in the skill as a field note with its evidence. The method is in [docs/field-data.md](docs/field-data.md).
 
-The skills follow the open [Agent Skills spec](https://agentskills.io/specification), so they work in any agent that reads `SKILL.md` files (Claude Code, Codex, GitHub Copilot, Cursor, OpenCode, and others). No skill names one vendor's tools or models.
+The skills follow the open [Agent Skills spec](https://agentskills.io/specification). They work in any agent that reads `SKILL.md` files, including Claude Code, Codex, GitHub Copilot, Cursor, and OpenCode. No skill depends on one vendor's tools or models.
 
 ## Install
 
 ```bash
-npx skills add imaginaerumai/field-tested-skills          # pick skills and agents interactively
-npx skills add imaginaerumai/field-tested-skills#v1.1.0 -s principal-autopilot -y   # just the main skill, pinned
+npx skills add imaginaerumai/field-tested-skills                                    # choose skills and agents
+npx skills add imaginaerumai/field-tested-skills#v1.1.0 -s principal-autopilot -y   # main skill, pinned
 ```
 
-Or copy a folder from `skills/` into your agent's skills directory.
+You can also copy a folder from `skills/` into your agent's skills directory.
 
-## Start here: `principal-autopilot`
+## Start with principal-autopilot
 
-One skill that runs work through a ten-step loop: frame, read, self-grill, build small, prove, challenge, simplify, clean up, report, retro. Each step ends on a "done when" line the agent can check. Small tasks take a four-step fast path. The skill installs the companion skills it needs, project-scoped and pinned.
+It runs work through a ten-step loop: frame, read, self-grill, build small, prove, challenge, simplify, clean up, report, retro. Each step ends on a done-when line the agent can check. Small tasks take a four-step path. It carries `stopslop` built in, so its writing standard and prose linter work with nothing installed. On first use it installs its other companion skills, scoped to the project and pinned to a release.
 
 ```
 /principal-autopilot the export job drops rows when the batch is over 1000. fix it.
 ```
 
-I wrote it based on the idea of Lauren Tan's poteto-mode, enhanced for software engineering with stricter rules, and with Matt Pocock's grilling, diagnosis, and retro skills built into the loop. [lineage.md](skills/autopilot/principal-autopilot/references/lineage.md) lists every borrowed part and what changed.
+I wrote it from the idea behind Lauren Tan's poteto-mode and made it stricter for software engineering. Matt Pocock's grilling, diagnosis, and retro skills run inside the loop. [lineage.md](skills/autopilot/principal-autopilot/references/lineage.md) lists every borrowed part and every change.
 
 ## The skills
 
-| Skill | What it does | Author |
-|---|---|---|
-| **autopilot** | | |
-| [principal-autopilot](skills/autopilot/principal-autopilot/SKILL.md) | Strict engineering loop: self-grill, prove, challenge, simplify, clean up, with companion bootstrap | Marcin Jeziorek, based on Lauren Tan's poteto-mode idea |
-| **engineering** | | |
-| [grilling](skills/engineering/grilling/SKILL.md) | Interview the user (or yourself) down a design tree until nothing is assumed | Matt Pocock |
-| [grill-me](skills/engineering/grill-me/SKILL.md) | Short trigger that loads `grilling` | Matt Pocock |
-| [diagnosing-bugs](skills/engineering/diagnosing-bugs/SKILL.md) | Build a red feedback loop first, then bisect, hypothesize, instrument, fix | Matt Pocock |
-| [retro](skills/engineering/retro/SKILL.md) | Turn a session's mistakes into checks, pointers, and leaner steering files | Matt Pocock |
-| [handoff](skills/engineering/handoff/SKILL.md) | Compact a session into a doc the next agent can pick up | Matt Pocock |
-| **writing** | | |
-| [stopslop](skills/writing/stopslop/SKILL.md) | Remove AI-writing tells, with a linter that gates the exact text that ships and rules for engineering prose | Marcin Jeziorek, built on humanizer and unslop |
-| [writing-for-agents](skills/writing/writing-for-agents/SKILL.md) | How to write skills and `AGENTS.md` files agents follow reliably | Matt Pocock |
-| [humanizer](skills/writing/humanizer/SKILL.md) | Rewrite AI-sounding prose without changing what it says | Siqi Chen (blader) |
-| [unslop](skills/writing/unslop/SKILL.md) | Short rule list that cuts AI tells from replies and commit text | Lauren Tan |
-| **browser** | | |
-| [agent-browser](skills/browser/agent-browser/SKILL.md) | Browser automation CLI for agents, plus six fixes from 3,492 logged calls | Vercel Labs |
-| **ops** | | |
-| [purge-stress](skills/ops/purge-stress/SKILL.md) | Kill leaked headless Chromium that pins CPU after automation | Marcin Jeziorek |
+| Category | Skill | What it does | Author |
+|---|---|---|---|
+| autopilot | [principal-autopilot](skills/autopilot/principal-autopilot/SKILL.md) | Strict engineering loop with `stopslop` built in and companion bootstrap | Marcin Jeziorek, from Lauren Tan's poteto-mode idea |
+| engineering | [grilling](skills/engineering/grilling/SKILL.md) | Interview the user, or yourself, down a design tree until nothing is assumed | Matt Pocock |
+| engineering | [grill-me](skills/engineering/grill-me/SKILL.md) | Trigger that loads `grilling` | Matt Pocock |
+| engineering | [diagnosing-bugs](skills/engineering/diagnosing-bugs/SKILL.md) | Build a failing feedback loop first, then bisect, instrument, and fix | Matt Pocock |
+| engineering | [retro](skills/engineering/retro/SKILL.md) | Turn a session's mistakes into checks and leaner steering files | Matt Pocock |
+| engineering | [handoff](skills/engineering/handoff/SKILL.md) | Compact a session into a doc the next agent can continue from | Matt Pocock |
+| writing | [stopslop](skills/writing/stopslop/SKILL.md) | Clean technical prose, gated by a linter on the exact text that ships | Marcin Jeziorek, from humanizer and unslop |
+| writing | [writing-for-agents](skills/writing/writing-for-agents/SKILL.md) | Write skills and `AGENTS.md` files that agents follow reliably | Matt Pocock |
+| writing | [unslop](skills/writing/unslop/SKILL.md) | Short rule list against AI tells | Lauren Tan |
+| browser | [agent-browser](skills/browser/agent-browser/SKILL.md) | Browser automation CLI, plus six fixes from 3,492 logged calls | Vercel Labs |
+| ops | [purge-stress](skills/ops/purge-stress/SKILL.md) | Kill leaked headless Chromium that pins the CPU after automation | Marcin Jeziorek |
 
-## Credit where it is due
+## Credits
 
-Most of this repo is other people's work, and it says so on every page.
+Most of this repo builds on other people's work, and every page says so.
 
-- **Matt Pocock**, [mattpocock/skills](https://github.com/mattpocock/skills). `grilling`, `grill-me`, `diagnosing-bugs`, `retro`, `handoff`, `writing-for-agents`. His `retro` skill also runs this repo's maintenance (see below).
-- **Lauren Tan (poteto)**, [pstack](https://github.com/cursor/plugins/tree/main/pstack). `unslop`, part of the base for `stopslop`, and the idea behind `principal-autopilot`.
-- **Siqi Chen (blader)**, [humanizer](https://github.com/blader/humanizer). Also the pattern categories in `stopslop`.
-- **Vercel Labs**, [agent-browser](https://github.com/vercel-labs/agent-browser).
+- Matt Pocock, [mattpocock/skills](https://github.com/mattpocock/skills): `grilling`, `grill-me`, `diagnosing-bugs`, `retro`, `handoff`, `writing-for-agents`. His `retro` also drives this repo's maintenance.
+- Lauren Tan (poteto), [pstack](https://github.com/cursor/plugins/tree/main/pstack): `unslop`, part of `stopslop`, and the idea behind `principal-autopilot`.
+- Siqi Chen (blader), [humanizer](https://github.com/blader/humanizer): the pattern groups in `stopslop`.
+- Vercel Labs, [agent-browser](https://github.com/vercel-labs/agent-browser).
 
-Every derived skill opens with an **Origin** note, keeps the upstream text verbatim, and puts our additions under **Field notes** at the end. Its `UPSTREAM.md` pins the source commit and lists every edit. License texts are in [licenses/](licenses/).
+Each derived skill opens with an Origin note and keeps the upstream text verbatim. Our additions sit under Field notes at the end. Its `UPSTREAM.md` pins the source commit and lists every edit. License texts are in [licenses/](licenses/).
 
-## How the repo stays honest
+## Quality gates
 
-- [`scripts/validate.mjs`](scripts/validate.mjs) runs in CI on every push. It enforces the Agent Skills spec, Origin notes on derived skills, pinned upstream commits, working relative links, and no em dashes in original text. It rejects anything shaped like a credential, and locally it also blocks a private list of employer terms.
-- [`scripts/port.mjs`](scripts/port.mjs) regenerates every derived skill from its pinned upstream commit. `--check` fails if anyone hand-edited upstream text.
-- [`scripts/stopslop.test.mjs`](scripts/stopslop.test.mjs) pins the prose linter: what it flags, what it skips (code, links), and its exit codes. The README and every original skill pass it.
-- [`scripts/purge-stress.test.mjs`](scripts/purge-stress.test.mjs) spawns fake leaked, headless, and headed browser processes and asserts that only the right ones die.
-- After any substantial session, I run Matt Pocock's `retro` and turn each finding into a validator check before writing any prose rule. See [docs/maintenance.md](docs/maintenance.md).
+CI runs all of these on every push.
+
+| Check | What it enforces |
+|---|---|
+| [scripts/validate.mjs](scripts/validate.mjs) | Agent Skills spec, Origin notes, pinned upstream commits, working links, no em dashes in original text, no credentials. Locally it also blocks a private list of employer terms. |
+| [scripts/port.mjs](scripts/port.mjs) `--check` | Upstream text in derived skills matches the pinned commit. Run locally, since it needs the network. |
+| [scripts/stopslop.test.mjs](scripts/stopslop.test.mjs) | The prose linter flags what it should and skips code and links. |
+| stopslop lint | This README, the docs, and every original skill pass the `stopslop` standard. The copy bundled in `principal-autopilot` must match the standalone skill byte for byte. |
+| [scripts/purge-stress.test.mjs](scripts/purge-stress.test.mjs) | Only leaked and headless browser processes die. Headed browsers survive. |
+
+After a substantial session I run Matt Pocock's `retro` and turn each finding into a check before writing any prose rule. See [docs/maintenance.md](docs/maintenance.md).
 
 ## Layout
 
@@ -80,9 +80,9 @@ docs/                               conventions, field data method, maintenance
 
 ## About the author
 
-I'm Marcin Jeziorek. I build software with coding agents every day, across enterprise platforms and my own apps. This repo is how I work. Measure what the agent actually does, fix the cause, encode the fix so it cannot regress, and credit the people whose ideas I build on.
+I'm Marcin Jeziorek. I build software with coding agents every day, on enterprise platforms and on my own apps. This repo shows how I work: measure what the agent does, fix the cause, encode the fix so it cannot regress, and credit the people whose ideas I build on.
 
-Issues and pull requests are welcome. A field note needs evidence, not just opinion.
+Issues and pull requests are welcome. A new field note needs evidence from real use.
 
 ## License
 

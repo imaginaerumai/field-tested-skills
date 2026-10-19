@@ -6,7 +6,7 @@ Author: Marcin Jeziorek. Based on the idea of Lauren Tan's poteto-mode, enhanced
 |---|---|---|
 | Autonomy rules and session overrides | poteto-mode, Lauren Tan, [pstack](https://github.com/cursor/plugins/tree/main/pstack) (MIT) | Removed Cursor-specific tools (Task parameters, model slugs, bugbot, `/loop`). Widened the pause list to all outward messages and publishing. poteto lets team chat and ticket updates proceed. |
 | Candor rule, evidence labels, "never hand the human a check you could run" | poteto-mode | Kept. Labels are `measured`, `inferred`, `guess`. |
-| Reply style, write clean as you draft | poteto-mode "Writing the reply" and `unslop` | Shortened. Dropped the bold-header-sentence rule. Prose rules now come from our `stopslop`, which adds a linter that gates shipped text. Principle citations must quote the line that drove the decision, because the agent reads our summary, not poteto's leaf skills. |
+| Reply style, write clean as you draft | poteto-mode "Writing the reply" and `unslop` | Shortened. Dropped the bold-header-sentence rule. Prose rules are our `stopslop`, bundled inside this skill (section 5, `scripts/stopslop.mjs`, `references/stopslop-patterns.md`). The repo validator keeps the bundled copies identical to `skills/writing/stopslop`. Principle citations must quote the line that drove the decision, because the agent reads our summary, not poteto's leaf skills. |
 | Comment rules | poteto-mode "Comments" | Folded into step 8. |
 | Empirical forks settled by a sketch | poteto-mode non-negotiables and Prototype playbook | Folded into step 3. Sketches are deleted at step 8. |
 | Subagent rules | poteto-mode "Subagents" | Made optional. Removed model routing. |

@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { lint } from "../skills/writing/stopslop/scripts/stopslop.mjs";
 
 const CLI = fileURLToPath(new URL("../skills/writing/stopslop/scripts/stopslop.mjs", import.meta.url));
-const rules = (text, opts) => lint(text, opts).map((h) => `${h.line}:${h.rule}`);
+const rules = (text) => lint(text).map((h) => `${h.line}:${h.rule}`);
 
 test("flags the tells that shipped in real sessions", () => {
   const text = [
@@ -17,7 +17,7 @@ test("flags the tells that shipped in real sessions", () => {
     "I hope this helps!",
   ].join("\n");
   assert.deepEqual(rules(text), [
-    "1:heading-emoji", "1:title-case",
+    "1:title-case", "1:emoji",
     "2:staged-opener", "2:not-x-but-y",
     "3:unbacked-claim", "3:guarantee",
     "4:copula-dodge", "4:dash", "4:hype",
@@ -26,19 +26,26 @@ test("flags the tells that shipped in real sessions", () => {
   ]);
 });
 
+test("dashes and emojis are hard errors with no override", () => {
+  assert.deepEqual(rules("Ship it – now. Done ✅"), ["1:dash", "1:emoji"]);
+  assert.throws(() => execFileSync("node", [CLI, "--allow-dashes"], { input: "a — b" }), (e) => e.status === 2);
+});
+
+test("filler, long sentences, and repeated bold in one paragraph", () => {
+  const long = Array.from({ length: 31 }, (_, i) => `w${i}`).join(" ") + ".";
+  const text = ["In order to ship, run it.", "", long, "", "**One** bold is fine.", "", "**Two** bold **spans** are not.", "line two of the same paragraph"].join("\n");
+  assert.deepEqual(rules(text), ["1:filler", "3:long-sentence", "7:bold-density"]);
+});
+
 test("ignores code fences, inline code, link targets, and URLs", () => {
   const text = [
     "Run `a -- b` first.",
     "```",
-    "x = y — z // I hope this helps",
+    "x = y — z // I hope this helps 🚀",
     "```",
     "See [docs](https://example.com/a--b—c) or https://example.com/delve.",
   ].join("\n");
   assert.deepEqual(rules(text), []);
-});
-
-test("--allow-dashes keeps the writer's dashes but still flags the rest", () => {
-  assert.deepEqual(rules("A — B. Great question!", { allowDashes: true }), ["1:chatbot"]);
 });
 
 test("CLI exits 1 on a hard hit, 0 on clean text, 2 on a bad flag", () => {
