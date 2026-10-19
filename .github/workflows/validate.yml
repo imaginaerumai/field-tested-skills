@@ -12,4 +12,4 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/validate.mjs
-      - run: node --test scripts/
+      - run: node --test scripts/*.test.mjs

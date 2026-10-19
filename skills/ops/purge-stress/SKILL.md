@@ -45,4 +45,4 @@ cp scripts/purge-stress ~/.local/bin/ && chmod +x ~/.local/bin/purge-stress
 
 ## Verification
 
-`node --test scripts/` at the repo root spawns fake leaked, headless, and headed processes, runs the real script, and asserts that only the first two die.
+`node --test scripts/*.test.mjs` at the repo root spawns fake leaked, headless, and headed processes, runs the real script, and asserts that only the first two die.
