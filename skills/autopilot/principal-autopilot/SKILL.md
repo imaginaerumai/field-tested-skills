@@ -1,39 +1,38 @@
 ---
 name: principal-autopilot
-description: Run work through a self-grill, prove, challenge, simplify, clean-up loop, installing its companion skills first. Use when the user says autopilot or principal mode, or hands over a multi-file change, a bug with no known cause, or work they will review later.
+description: Strict software-engineering operating mode. Runs work through a self-grill, prove, challenge, simplify, clean-up loop, installing its companion skills first. Use when the user says autopilot or principal mode, or hands over a multi-file change, a bug with no known cause, or work they will review later.
 license: MIT
 metadata:
   author: Marcin Jeziorek
-  version: "0.2.0"
-  inspired-by: "poteto-mode by Lauren Tan (pstack, MIT); grilling, retro, diagnosing-bugs by Matt Pocock (MIT)"
+  version: "1.1.0"
+  inspired-by: "the idea of poteto-mode by Lauren Tan (pstack, MIT); grilling, retro, diagnosing-bugs by Matt Pocock (MIT)"
   inspired-by-license: licenses/pstack.MIT.txt licenses/mattpocock-skills.MIT.txt
 ---
 
 # Principal autopilot
 
-> **Origin.** Original to this repo, built on other people's work. The autonomy rules, reply style, principles, and playbooks are adapted from Lauren Tan's [poteto-mode](https://github.com/cursor/plugins/tree/main/pstack) (MIT). The grilling, diagnosis, and retro steps load Matt Pocock's skills from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). New here: wording that works in any agent, companion bootstrap, a size gate, a self-grill gate before code, and simplify and clean-up as steps with exit criteria. Every borrowed part and every change is listed in [references/lineage.md](references/lineage.md).
+> **Origin.** Author: Marcin Jeziorek. Based on the idea of Lauren Tan's [poteto-mode](https://github.com/cursor/plugins/tree/main/pstack) (MIT): one mode skill that routes an agent through playbooks and engineering principles. This version is enhanced for software engineering with stricter rules. Every step ends on a checkable done-when line. A self-grill gate runs before any code. Simplify and clean-up are mandatory steps with exit criteria. Every claim carries evidence or a label. Prose is linted by `stopslop` before it ships. The grilling, diagnosis, and retro steps load Matt Pocock's skills from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). Every borrowed part and every change is listed in [references/lineage.md](references/lineage.md).
 
 ## 0. Bootstrap (once per session)
 
-Say `principal-autopilot: on` in your first reply. Load `unslop` now. Its rules apply to every sentence you write this session, including todos, comments, and commit messages. Write clean as you draft. A cleanup pass after drafting does not remove the patterns.
+Say `principal-autopilot: on` in your first reply. Load `stopslop` now. Its rules apply to every sentence you write this session, including todos, comments, and commit messages. Write clean as you draft. A cleanup pass after drafting does not remove the patterns.
 
 Check your skill list against the companions:
 
 | Companion | Needed when | Step |
 |---|---|---|
 | `grilling` | always | 3 |
-| `unslop` | always | 0 |
+| `stopslop` | always | 0, 9 |
 | `retro` | always | 10 |
 | `diagnosing-bugs` | a bug, failure, or regression | 2 |
 | `handoff` | context is running low, or the session ends mid-task | any |
 | `writing-for-agents` | editing a skill, `AGENTS.md`, or `CLAUDE.md` | 4 |
-| `humanizer` | human-facing prose longer than a reply | 4 |
 | `agent-browser`, `purge-stress` | the task drives a browser | 5, 8 |
 
 Install only the missing ones, into the current project, pinned to a release:
 
 ```bash
-npx skills add imaginaerumai/field-tested-skills#v1.0.0 -y -s <missing names, space-separated>
+npx skills add imaginaerumai/field-tested-skills#v1.1.0 -y -s <missing names, space-separated>
 ```
 
 This is a project-scoped install the user can delete. Report it in one line. Install globally (`-g`) only if the user asks. If a new skill does not appear in your skill list, read its `SKILL.md` from the install path for this session. If the install fails, say so in one line and continue with this file alone.
@@ -68,8 +67,8 @@ Open a todo list with the steps below copied verbatim, before any task-specific 
 8. **Clean up.** Remove debug output, scratch files, sketches from step 3, and processes you started. For browsers, run `agent-browser close`, then the `purge-stress` dry run. Keep a comment only for a non-obvious *why*. Test and verify scripts get no comments narrating phases. The assertion message names the step. This applies to every file you produce, a subagent's diff included.
    Done when: you have listed every file, branch, and process you created, and each is removed or named in the reply as intentionally left.
 
-9. **Report.** Write the reply per **Writing the reply**. Do not say done while any step lacks its done-when or a `skip:` reason.
-   Done when: every claim in the reply carries its evidence or its label.
+9. **Report.** Write the reply per **Writing the reply**. Run the `stopslop` linter on every doc, PR description, and commit message you produced. Do not say done while any step lacks its done-when or a `skip:` reason.
+   Done when: every claim in the reply carries its evidence or its label, and the linter shows zero hard hits on shipped prose.
 
 10. **Retro.** After a substantial session (a loop back, a user correction, or more than about 40 tool calls), load `retro`. Turn each repeated mistake into a check (lint, test, validator rule, script) before you write any prose rule.
     Done when: each finding is applied, filed, or dropped with a reason.
