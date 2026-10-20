@@ -10,14 +10,14 @@ The skills follow the open [Agent Skills spec](https://agentskills.io/specificat
 
 ```bash
 npx skills add imaginaerumai/field-tested-skills                                    # choose skills and agents
-npx skills add imaginaerumai/field-tested-skills#v1.2.0 -s principal-autopilot -y   # main skill, pinned
+npx skills add imaginaerumai/field-tested-skills#v1.3.0 -s principal-autopilot -y   # main skill, pinned
 ```
 
 You can also copy a folder from `skills/` into your agent's skills directory.
 
 ## Start with principal-autopilot
 
-It runs work through a ten-step loop: frame, read, self-grill, build small, prove, challenge, simplify, clean up, report, retro. Each step ends on a done-when line the agent can check. Small tasks take a four-step path. It carries `stopslop` built in, so its writing standard and prose linter work with nothing installed. On first use it installs its other companion skills, scoped to the project and pinned to a release.
+It runs work through a ten-step loop: frame, read, self-grill, build small, prove, challenge, simplify, clean up, report, retro. Each step ends on a done-when line the agent can check. Small tasks take a four-step path. It carries `stopslop` built in, so its writing standard and prose linter work with nothing installed. It uses its companion skills when they are installed. When they are missing, it suggests the install command and waits for your yes.
 
 ```
 /principal-autopilot the export job drops rows when the batch is over 1000. fix it.

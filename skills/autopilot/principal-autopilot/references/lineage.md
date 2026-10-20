@@ -15,6 +15,6 @@ Author: Marcin Jeziorek. Based on the idea of Lauren Tan's poteto-mode, enhanced
 | Self-grill | `grilling` by Matt Pocock, [mattpocock/skills](https://github.com/mattpocock/skills) (MIT) | Applied to the agent's own plan. Wait and confirm rules apply only to preference calls. Documented in our `grilling` field note 3. |
 | Diagnosis | `diagnosing-bugs` by Matt Pocock | Loaded unchanged at step 2. |
 | Retro | `retro` by Matt Pocock | Loaded unchanged at step 10. Findings go to checks before prose. |
-| Bootstrap, size gate, loop with done-when lines, mandatory self-grill, simplify, and clean-up steps, prose lint gate | Original | Done-when lines apply the completion-criterion idea from Matt Pocock's `writing-for-agents`. |
+| Companion check (use if installed, suggest and ask if missing), size gate, loop with done-when lines, mandatory self-grill, simplify, and clean-up steps, prose lint gate | Original | Done-when lines apply the completion-criterion idea from Matt Pocock's `writing-for-agents`. |
 
 Licenses: [`licenses/pstack.MIT.txt`](https://github.com/imaginaerumai/field-tested-skills/blob/main/licenses/pstack.MIT.txt), [`licenses/mattpocock-skills.MIT.txt`](https://github.com/imaginaerumai/field-tested-skills/blob/main/licenses/mattpocock-skills.MIT.txt).

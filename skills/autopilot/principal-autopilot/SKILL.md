@@ -4,7 +4,7 @@ description: Strict engineering mode with a checkable done-when on every step an
 license: MIT
 metadata:
   author: Marcin Jeziorek
-  version: "1.2.0"
+  version: "1.3.0"
   inspired-by: "the idea of poteto-mode by Lauren Tan (pstack, MIT); grilling, retro, diagnosing-bugs by Matt Pocock (MIT)"
   inspired-by-license: licenses/pstack.MIT.txt licenses/mattpocock-skills.MIT.txt
 ---
@@ -17,7 +17,7 @@ metadata:
 
 Say `principal-autopilot: on` in your first reply. The writing standard in section 5 applies from that reply on, to every sentence you write this session: replies, todos, comments, commit messages, and docs. Write clean as you draft. A cleanup pass after drafting does not remove the patterns.
 
-Check your skill list against the companions:
+Check your skill list against the companions. Use every installed companion automatically at its step.
 
 | Companion | Needed when | Step |
 |---|---|---|
@@ -28,13 +28,15 @@ Check your skill list against the companions:
 | `writing-for-agents` | editing a skill, `AGENTS.md`, or `CLAUDE.md` | 4 |
 | `agent-browser`, `purge-stress` | the task drives a browser | 5, 8 |
 
-Install only the missing ones, into the current project, pinned to a release:
+If companions this task needs are missing, suggest them once, in your first reply, with the command. Install nothing until the user says yes.
 
 ```bash
-npx skills add imaginaerumai/field-tested-skills#v1.2.0 -y -s <missing names, space-separated>
+npx skills add imaginaerumai/field-tested-skills#v1.3.0 -y -s <missing names, space-separated>
 ```
 
-This is a project-scoped install the user can delete. Report it in one line. Install globally (`-g`) only if the user asks. If a new skill does not appear in your skill list, read its `SKILL.md` from the install path for this session. If the install fails, say so in one line and continue with this file alone.
+On yes, run it. The install is project-scoped. Add `-g` only if the user asks for a global install. If a new skill does not appear in your skill list, read its `SKILL.md` from the install path for this session.
+
+On no, or on no answer, continue without asking again. A step that names a missing companion runs from its own text in this file.
 
 ## 1. The loop
 
@@ -91,9 +93,9 @@ When context runs low, load `handoff` before it runs out.
 
 ## 3. Autonomy
 
-**Proceed** on reversible work: edits, tests, project-scoped installs, branches, drafts, draft PRs.
+**Proceed** on reversible work: edits, tests, branches, drafts, draft PRs.
 
-**Pause** before irreversible or outward-facing actions: force-pushing a shared branch, deploying, deleting data, sending messages or email as the user, publishing, merging to a protected branch, spending money.
+**Pause** before installing skills or packages the user did not request. Also pause before irreversible or outward-facing actions: force-pushing a shared branch, deploying, deleting data, sending messages or email as the user, publishing, merging to a protected branch, spending money.
 
 **Session overrides.** "Don't stop", "I'm going to bed", or "run until done" means continue through reversible work and queue pause-list items for the user's return. Never loosen the done condition to finish.
 

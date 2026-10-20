@@ -29,4 +29,4 @@ node --test scripts/*.test.mjs          # behavior tests
 
 ## Releases
 
-Tag `vMAJOR.MINOR.PATCH`. `principal-autopilot` installs companions from a pinned tag, so bump that tag in its `SKILL.md` when a companion changes in a way it depends on.
+Tag `vMAJOR.MINOR.PATCH`. `principal-autopilot` suggests companion installs from a pinned tag, so bump that tag in its `SKILL.md` when a companion changes in a way it depends on.
