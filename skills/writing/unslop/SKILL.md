@@ -71,5 +71,5 @@ Rule numbers are stable ids that other skills cite. A removed rule leaves a gap.
 
 ## Field notes
 
-1. **Prefer `stopslop` in this repo.** `stopslop` keeps these rules, adds a linter that gates shipped text, and bans dashes and emojis without exception. Use `unslop` alone only where you cannot run Node.
-2. **Agent-facing prose is a different job.** For skills and `AGENTS.md`, `writing-for-agents` overrides style choices here.
+1. Prefer `stopslop` in this repo. `stopslop` keeps these rules, adds a linter that gates shipped text, and bans dashes and emojis without exception. Use `unslop` alone only where you cannot run Node.
+2. Agent-facing prose is a different job. For skills and `AGENTS.md`, `writing-for-agents` overrides style choices here.

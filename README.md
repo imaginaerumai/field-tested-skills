@@ -10,7 +10,7 @@ The skills follow the open [Agent Skills spec](https://agentskills.io/specificat
 
 ```bash
 npx skills add imaginaerumai/field-tested-skills                                    # choose skills and agents
-npx skills add imaginaerumai/field-tested-skills#v1.1.0 -s principal-autopilot -y   # main skill, pinned
+npx skills add imaginaerumai/field-tested-skills#v1.2.0 -s principal-autopilot -y   # main skill, pinned
 ```
 
 You can also copy a folder from `skills/` into your agent's skills directory.
@@ -58,10 +58,10 @@ CI runs all of these on every push.
 
 | Check | What it enforces |
 |---|---|
-| [scripts/validate.mjs](scripts/validate.mjs) | Agent Skills spec, Origin notes, pinned upstream commits, working links, no em dashes in original text, no credentials. Locally it also blocks a private list of employer terms. |
+| [scripts/validate.mjs](scripts/validate.mjs) | Agent Skills spec, Origin notes, pinned upstream commits, links that survive install, no credentials. Locally it also blocks a private list of employer terms. |
 | [scripts/port.mjs](scripts/port.mjs) `--check` | Upstream text in derived skills matches the pinned commit. Run locally, since it needs the network. |
 | [scripts/stopslop.test.mjs](scripts/stopslop.test.mjs) | The prose linter flags what it should and skips code and links. |
-| stopslop lint | This README, the docs, and every original skill pass the `stopslop` standard. The copy bundled in `principal-autopilot` must match the standalone skill byte for byte. |
+| stopslop gate (in validate.mjs) | Our own text has zero hard and strong hits. Borrowed text has zero dashes and emojis, fixed through recorded upstream edits. The standard and linter bundled in `principal-autopilot` match `stopslop` exactly. |
 | [scripts/purge-stress.test.mjs](scripts/purge-stress.test.mjs) | Only leaked and headless browser processes die. Headed browsers survive. |
 
 After a substantial session I run Matt Pocock's `retro` and turn each finding into a check before writing any prose rule. See [docs/maintenance.md](docs/maintenance.md).

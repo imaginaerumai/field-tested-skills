@@ -4,7 +4,7 @@
 - Path: `skills/agent-browser`
 - Commit: `dac13bb87468fe9d74a040d862720f6cc17a9565`
 - Author: Vercel Labs
-- License: Apache-2.0, full text in [`licenses/agent-browser.Apache-2.0.txt`](../../../licenses/agent-browser.Apache-2.0.txt)
+- License: Apache-2.0, full text in [`licenses/agent-browser.Apache-2.0.txt`](https://github.com/imaginaerumai/field-tested-skills/blob/main/licenses/agent-browser.Apache-2.0.txt)
 
 Regenerate with `node scripts/port.mjs`. Never hand-edit the part of SKILL.md above `## Field notes`.
 

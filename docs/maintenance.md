@@ -15,14 +15,15 @@ Example from the first session: a denylist of private terms was itself sitting i
 1. Bump `commit` for a source in `upstream.json`.
 2. Run `node scripts/port.mjs`. It fails loudly if an edit no longer matches upstream text exactly once.
 3. Reread the field notes against the new upstream. Delete any that upstream now covers.
-4. Run `node scripts/validate.mjs` and `node --test scripts/*.test.mjs`.
+4. If the new upstream text adds a dash or emoji, the validator fails. Add a recorded edit to `upstream.json` and rerun the port.
+5. Run `node scripts/validate.mjs` and `node --test scripts/*.test.mjs`.
 
 `node scripts/port.mjs --check` exits non-zero if the generated half of any skill drifted from its pinned upstream.
 
 ## Before every push
 
 ```bash
-node scripts/validate.mjs     # spec, attribution, links, secrets, private terms (local only)
+node scripts/validate.mjs     # spec, attribution, links, secrets, stopslop gate, private terms (local only)
 node --test scripts/*.test.mjs          # behavior tests
 ```
 

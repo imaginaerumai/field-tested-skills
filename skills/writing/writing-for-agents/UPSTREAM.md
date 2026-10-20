@@ -4,7 +4,7 @@
 - Path: `skills/productivity/writing-for-agents`
 - Commit: `49dd158d1076134a641b33efb035946536778336`
 - Author: Matt Pocock
-- License: MIT, full text in [`licenses/mattpocock-skills.MIT.txt`](../../../licenses/mattpocock-skills.MIT.txt)
+- License: MIT, full text in [`licenses/mattpocock-skills.MIT.txt`](https://github.com/imaginaerumai/field-tested-skills/blob/main/licenses/mattpocock-skills.MIT.txt)
 
 Regenerate with `node scripts/port.mjs`. Never hand-edit the part of SKILL.md above `## Field notes`.
 

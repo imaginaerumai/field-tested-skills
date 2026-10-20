@@ -9,7 +9,7 @@
 // Code fences, inline code, URLs, and HTML comments are ignored.
 import { readFileSync } from "node:fs";
 
-const AI_WORDS = ["additionally", "bolstered", "crucial", "delve", "delves", "delving", "enduring", "garner", "interplay", "intricate", "intricacies", "meticulous", "meticulously", "pivotal", "showcase", "showcases", "showcasing", "tapestry", "testament", "underscore", "underscores", "vibrant", "realm", "embark", "unleash", "elevate", "empower", "holistic", "synergy", "paradigm", "landscape"];
+const AI_WORDS = ["additionally", "bolstered", "crucial", "delve", "delves", "delving", "enduring", "garner", "interplay", "intricate", "intricacies", "meticulous", "meticulously", "pivotal", "showcase", "showcases", "showcasing", "tapestry", "testament", "underscore", "underscores", "vibrant", "embark", "unleash", "elevate", "empower", "holistic", "synergy", "paradigm", "landscape"];
 const FILLER = ["in order to", "due to the fact that", "it is important to note that", "it's worth noting that", "it is worth noting that", "please note that", "note that", "at the end of the day", "in terms of", "for all intents and purposes", "as a matter of fact", "the fact that", "in the event that", "at this point in time", "a number of", "is able to", "are able to", "basically", "essentially", "actually", "really", "very"];
 const MAX_SENTENCE_WORDS = 30;
 const HYPE = ["seamless", "seamlessly", "effortless", "effortlessly", "cutting-edge", "game-changer", "game-changing", "blazing fast", "blazingly fast", "best-in-class", "world-class", "next-generation", "revolutionary", "supercharge", "battle-tested"];
@@ -87,7 +87,7 @@ function titleCaseHeadings(masked) {
   return hits;
 }
 
-export function lint(text) {
+export function lint(text, { rules } = {}) {
   const masked = mask(text);
   const starts = [0];
   for (let i = 0; i < masked.length; i++) if (masked[i] === "\n") starts.push(i + 1);
@@ -104,7 +104,7 @@ export function lint(text) {
     }
   }
   hits.push(...titleCaseHeadings(masked), ...boldDensity(masked), ...longSentences(masked));
-  return hits.sort((a, b) => a.line - b.line || a.col - b.col);
+  return hits.filter((h) => !rules || rules.includes(h.rule)).sort((a, b) => a.line - b.line || a.col - b.col);
 }
 
 function main(argv) {

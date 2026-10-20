@@ -42,8 +42,8 @@ The session is done when the frontier is empty: every branch of the design tree 
 
 ## Field notes
 
-Evidence: 26 real sessions where grilling was loaded (method in [docs/field-data.md](../../../docs/field-data.md)).
+Evidence: 26 real sessions where grilling was loaded (method in [docs/field-data.md](https://github.com/imaginaerumai/field-tested-skills/blob/main/docs/field-data.md)).
 
-1. **Keep a decision log the user can rewind.** Users went back on an earlier answer 3 times ("bring back decisions, i took a wrong one"). After each round, print a numbered list of settled decisions. A reversal reopens only the branches downstream of that decision.
-2. **Letter the options.** Users answered with a bare letter or a numbered list in 16 short replies. Give every multiple-choice question lettered options so `Q2: b` is a complete answer.
-3. **Self-grill mode.** About 19 requests asked the agent to grill *itself* ("do the grill-me session yourself for the security"). When asked, run the same design tree with the agent as the interviewee. Settle each fact question from evidence you gather. In this mode the wait and confirm rules above apply only to preference calls, which go to the user as one batch with recommended answers. `principal-autopilot` runs this mode at its step 3, before any code.
+1. Keep a decision log the user can rewind. Users went back on an earlier answer 3 times ("bring back decisions, i took a wrong one"). After each round, print a numbered list of settled decisions. A reversal reopens only the branches downstream of that decision.
+2. Letter the options. Users answered with a bare letter or a numbered list in 16 short replies. Give every multiple-choice question lettered options so `Q2: b` is a complete answer.
+3. Self-grill mode. About 19 requests asked the agent to grill *itself* ("do the grill-me session yourself for the security"). When asked, run the same design tree with the agent as the interviewee. Settle each fact question from evidence you gather. In this mode the wait and confirm rules above apply only to preference calls, which go to the user as one batch with recommended answers. `principal-autopilot` runs this mode at its step 3, before any code.

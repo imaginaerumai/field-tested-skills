@@ -55,7 +55,7 @@ You have access to several files in the repo:
 
 ## Field notes
 
-How this repo uses it: after any substantial session here, run `retro`, then route each finding into a check in `scripts/validate.mjs` before writing any prose. Every check in that validator names the mistake it encodes. See [docs/maintenance.md](../../../docs/maintenance.md).
+How this repo uses it: after any substantial session here, run `retro`, then route each finding into a check in `scripts/validate.mjs` before writing any prose. Every check in that validator names the mistake it encodes. See [docs/maintenance.md](https://github.com/imaginaerumai/field-tested-skills/blob/main/docs/maintenance.md).
 
-1. **Where session logs live.** Step 2 says "search through session logs on this machine". Known locations: OpenCode keeps a SQLite store at `~/.local/share/opencode/opencode.db` (tables `session`, `message`, `part`; verified). Other agents keep their own; ask the agent for its path rather than guessing.
-2. **Mine across sessions, not just one.** One session shows an accident. The same failure in ten sessions shows a missing guardrail. A cross-session query (count tool errors, count user corrections like "no" or "again" after a skill fires) found every field note in this repo.
+1. Where session logs live. Step 2 says "search through session logs on this machine". Known locations: OpenCode keeps a SQLite store at `~/.local/share/opencode/opencode.db` (tables `session`, `message`, `part`; verified). Other agents keep their own; ask the agent for its path rather than guessing.
+2. Mine across sessions, not just one. One session shows an accident. The same failure in ten sessions shows a missing guardrail. A cross-session query (count tool errors, count user corrections like "no" or "again" after a skill fires) found every field note in this repo.

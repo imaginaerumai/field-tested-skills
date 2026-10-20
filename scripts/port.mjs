@@ -15,6 +15,8 @@ const CHECK = process.argv.includes("--check");
 const CACHE = process.env.PORT_CACHE ?? join(tmpdir(), "field-tested-skills-port");
 const manifest = JSON.parse(readFileSync(join(ROOT, "upstream.json"), "utf8"));
 const FIELD_NOTES = "\n## Field notes\n";
+// Absolute, so links still work after a skill folder is copied out of this repo.
+const REPO_URL = "https://github.com/imaginaerumai/field-tested-skills/blob/main/";
 const SPEC_KEEP = new Set(["name", "description", "license", "compatibility", "allowed-tools"]);
 
 const git = (cwd, ...args) => execFileSync("git", args, { cwd, stdio: ["ignore", "pipe", "pipe"] }).toString();
@@ -89,7 +91,7 @@ function build(skill, upstreamDir) {
     `- Path: \`${skill.path}\``,
     `- Commit: \`${source.commit}\``,
     `- Author: ${source.author}`,
-    `- License: ${source.license}, full text in [\`${source.licenseFile}\`](${relative(join(ROOT, "skills", skill.category, skill.name), join(ROOT, source.licenseFile))})`,
+    `- License: ${source.license}, full text in [\`${source.licenseFile}\`](${REPO_URL}${source.licenseFile})`,
     "", "Regenerate with `node scripts/port.mjs`. Never hand-edit the part of SKILL.md above `## Field notes`.", "",
     "## Changes from upstream", "",
     ...(skill.description ? ["- Description rewritten to state when to use the skill (Agent Skills spec recommends what + when)."] : []),

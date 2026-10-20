@@ -95,7 +95,7 @@ You win twice: fewer tokens, and a sharper hook for the agent to hang its thinki
 
 Replaces `write-a-skill`, which upstream retired. Evidence: 9 sessions using the older skill.
 
-1. **End with a coverage check.** Twice the user had to ask for missing scope after the first draft ("check all once again, and add anything missing"). Before you finish, list the user's stated scope items and point to the line that covers each.
-2. **Never ask questions from a subagent.** Once, a subagent drafting a skill asked questions the user could not see or answer, and the run stalled. Subagents return open questions to the parent. The parent asks.
-3. **Tell the user about reload.** Most agents index skills at session start. A new skill may not appear until a new session. Say so when you create one.
-4. **Validate against the spec.** Run the repo validator or `skills-ref validate`. Agent-specific frontmatter keys break other agents.
+1. End with a coverage check. Twice the user had to ask for missing scope after the first draft ("check all once again, and add anything missing"). Before you finish, list the user's stated scope items and point to the line that covers each.
+2. Never ask questions from a subagent. Once, a subagent drafting a skill asked questions the user could not see or answer, and the run stalled. Subagents return open questions to the parent. The parent asks.
+3. Tell the user about reload. Most agents index skills at session start. A new skill may not appear until a new session. Say so when you create one.
+4. Validate against the spec. Run the repo validator or `skills-ref validate`. Agent-specific frontmatter keys break other agents.

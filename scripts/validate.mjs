@@ -3,6 +3,7 @@
 // Zero dependencies. Exit code 1 on any failure.
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join, dirname, relative, resolve } from "node:path";
+import { lint } from "../skills/writing/stopslop/scripts/stopslop.mjs";
 
 const ROOT = resolve(dirname(new URL(import.meta.url).pathname), "..");
 const SKILLS = join(ROOT, "skills");
@@ -61,6 +62,7 @@ function parseFrontmatter(text, file) {
 
 const skillFiles = walk(SKILLS).filter((f) => f.endsWith("/SKILL.md"));
 const names = new Map();
+const derivedDirs = new Set();
 
 for (const file of skillFiles) {
   const dir = dirname(file);
@@ -82,6 +84,7 @@ for (const file of skillFiles) {
   const md = fm.metadata ?? {};
   if (!md.author) fail(file, "metadata.author required");
   if (md.upstream) {
+    derivedDirs.add(dir);
     if (!/^https:\/\/github\.com\/.+\/tree\/[0-9a-f]{7,40}\//.test(md.upstream)) fail(file, "metadata.upstream must pin a commit: https://github.com/<o>/<r>/tree/<sha>/<path>");
     if (!md["upstream-license"] || !existsSync(join(ROOT, md["upstream-license"]))) fail(file, "metadata.upstream-license must point to a file in licenses/");
     if (!/^#[^\n]+\n+> \*\*Origin\.\*\*/.test(body.trimStart())) fail(file, "derived skill must open with a '> **Origin.**' note right after the H1");
@@ -103,8 +106,33 @@ for (const file of walk(ROOT).filter((f) => !/\/(\.git|node_modules|licenses)\//
   if (INJECTION.test(text)) fail(file, "covert instruction aimed at third-party agents");
   if (file.endsWith(".md")) for (const [, link] of text.matchAll(/\]\((?!https?:|#|mailto:)([^)\s#]+)/g)) {
     if (!existsSync(resolve(dirname(file), link))) fail(file, `broken relative link: ${link}`);
+    const skillDir = relative(ROOT, file).match(/^skills\/[^/]+\/[^/]+/)?.[0];
+    if (skillDir && !resolve(dirname(file), link).startsWith(join(ROOT, skillDir) + "/")) fail(file, `link leaves the skill folder and breaks after install: ${link}. Use https://github.com/imaginaerumai/field-tested-skills/blob/main/<path>`);
   }
 }
+
+// stopslop always. Our own text: zero hard and strong hits. Borrowed upstream text stays verbatim,
+// but never ships a dash or an emoji; those are fixed through recorded edits in upstream.json.
+const gate = (file, text, lineOffset = 0, rules) => {
+  for (const h of lint(text, { rules })) {
+    if (h.tier === "weak") continue;
+    fail(file, `stopslop ${h.tier} ${h.rule} at line ${h.line + lineOffset}: "${h.match}". ${h.msg}`);
+  }
+};
+const ownDocs = ["README.md", "AGENTS.md", ...readdirSync(join(ROOT, "docs")).map((f) => `docs/${f}`)].map((f) => join(ROOT, f));
+for (const file of [...ownDocs, ...walk(SKILLS).filter((f) => f.endsWith(".md"))]) {
+  const text = readFileSync(file, "utf8");
+  const derived = [...derivedDirs].some((d) => file.startsWith(d + "/"));
+  if (!derived || file.endsWith("/UPSTREAM.md")) { gate(file, text); continue; }
+  gate(file, text, 0, ["dash", "emoji"]);
+  const at = text.indexOf("\n## Field notes\n");
+  if (file.endsWith("/SKILL.md") && at >= 0) gate(file, text.slice(at), text.slice(0, at).split("\n").length - 1);
+}
+
+// The six-rule standard lives in both stopslop and principal-autopilot. It must not drift.
+const standard = (f) => readFileSync(join(ROOT, f), "utf8").match(/<!-- stopslop-standard -->[\s\S]*?<!-- \/stopslop-standard -->/)?.[0];
+const [stdA, stdB] = ["skills/writing/stopslop/SKILL.md", "skills/autopilot/principal-autopilot/SKILL.md"].map(standard);
+if (!stdA || stdA !== stdB) fail(join(ROOT, "skills/autopilot/principal-autopilot/SKILL.md"), "the block between <!-- stopslop-standard --> markers must match skills/writing/stopslop/SKILL.md exactly");
 
 // Bundled copies: principal-autopilot ships stopslop so it works with no install. The copies must not drift.
 const BUNDLED = [

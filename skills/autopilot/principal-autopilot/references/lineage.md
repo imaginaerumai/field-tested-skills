@@ -17,4 +17,4 @@ Author: Marcin Jeziorek. Based on the idea of Lauren Tan's poteto-mode, enhanced
 | Retro | `retro` by Matt Pocock | Loaded unchanged at step 10. Findings go to checks before prose. |
 | Bootstrap, size gate, loop with done-when lines, mandatory self-grill, simplify, and clean-up steps, prose lint gate | Original | Done-when lines apply the completion-criterion idea from Matt Pocock's `writing-for-agents`. |
 
-Licenses: [`licenses/pstack.MIT.txt`](../../../../licenses/pstack.MIT.txt), [`licenses/mattpocock-skills.MIT.txt`](../../../../licenses/mattpocock-skills.MIT.txt).
+Licenses: [`licenses/pstack.MIT.txt`](https://github.com/imaginaerumai/field-tested-skills/blob/main/licenses/pstack.MIT.txt), [`licenses/mattpocock-skills.MIT.txt`](https://github.com/imaginaerumai/field-tested-skills/blob/main/licenses/mattpocock-skills.MIT.txt).

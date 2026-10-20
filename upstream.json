@@ -64,7 +64,13 @@
       "category": "engineering",
       "source": "mattpocock",
       "path": "skills/engineering/diagnosing-bugs",
-      "edits": []
+      "edits": [
+        {
+          "find": "Generate **3–5 ranked hypotheses**",
+          "replace": "Generate **3 to 5 ranked hypotheses**",
+          "reason": "stopslop: no en dashes, ever"
+        }
+      ]
     },
     {
       "name": "handoff",

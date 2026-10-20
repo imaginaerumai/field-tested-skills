@@ -61,11 +61,11 @@ The dashboard runs independently of browser sessions on port 4848 and can also b
 
 ## Field notes
 
-Evidence: 130 real sessions, 3,492 `agent-browser` calls, mined from local agent logs (method in [docs/field-data.md](../../../docs/field-data.md)).
+Evidence: 130 real sessions, 3,492 `agent-browser` calls, mined from local agent logs (method in [docs/field-data.md](https://github.com/imaginaerumai/field-tested-skills/blob/main/docs/field-data.md)).
 
-1. **Close every session you open.** Measured ratio was about 1,356 `open` to 320 `close`, and 47 of 130 sessions ended without a close. Headless Chromium renders on the CPU through SwiftShader, so a leaked tab on an animating page pins a core until reboot. One user hit two leaked GPU helpers at about 110% CPU each. End every flow with `agent-browser close`, including the error path. If your shell supports it, `trap 'agent-browser close' EXIT`. Recovery tool: the `purge-stress` skill.
-2. **Snapshot before every click after the page changes.** `Unknown ref: eNN` appeared 19 times in 12 sessions, always from chained `click @eN && click @eM` after navigation. Refs belong to one snapshot. Re-snapshot, then click.
-3. **Dismiss overlays first.** `Element @eN is covered by <div...>` appeared 15 times in 12 sessions, mostly cookie consent banners. Accept or close the banner as the first action on a new site.
-4. **Wrap `eval` code in an IIFE.** `Identifier 'x' has already been declared` appeared 11 times in 9 sessions, because each `eval` runs in the same page realm. Use `(() => { ... })()`.
-5. **Give commands a real timeout.** 38 calls in 21 sessions were killed by a 15 to 30 second shell timeout, `close` included. Allow at least 60 seconds for navigation-heavy commands.
-6. **Reuse the user's login instead of re-authenticating.** In about 6 sessions the user offered to log in for the agent about 12 times. Ask once, then reuse their state: `agent-browser connect <port>` attaches to a browser they started with remote debugging, and `--profile <name>` reuses a Chrome profile's login (both from `agent-browser --help`). Do not script SSO.
+1. Close every session you open. Measured ratio was about 1,356 `open` to 320 `close`, and 47 of 130 sessions ended without a close. Headless Chromium renders on the CPU through SwiftShader, so a leaked tab on an animating page pins a core until reboot. One user hit two leaked GPU helpers at about 110% CPU each. End every flow with `agent-browser close`, including the error path. If your shell supports it, `trap 'agent-browser close' EXIT`. Recovery tool: the `purge-stress` skill.
+2. Snapshot before every click after the page changes. `Unknown ref: eNN` appeared 19 times in 12 sessions, always from chained `click @eN && click @eM` after navigation. Refs belong to one snapshot. Re-snapshot, then click.
+3. Dismiss overlays first. `Element @eN is covered by <div...>` appeared 15 times in 12 sessions, mostly cookie consent banners. Accept or close the banner as the first action on a new site.
+4. Wrap `eval` code in an IIFE. `Identifier 'x' has already been declared` appeared 11 times in 9 sessions, because each `eval` runs in the same page realm. Use `(() => { ... })()`.
+5. Give commands a real timeout. 38 calls in 21 sessions were killed by a 15 to 30 second shell timeout, `close` included. Allow at least 60 seconds for navigation-heavy commands.
+6. Reuse the user's login instead of re-authenticating. In about 6 sessions the user offered to log in for the agent about 12 times. Ask once, then reuse their state: `agent-browser connect <port>` attaches to a browser they started with remote debugging, and `--profile <name>` reuses a Chrome profile's login (both from `agent-browser --help`). Do not script SSO.

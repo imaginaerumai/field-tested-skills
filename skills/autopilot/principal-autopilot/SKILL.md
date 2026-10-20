@@ -1,17 +1,17 @@
 ---
 name: principal-autopilot
-description: Strict software-engineering operating mode. Runs work through a self-grill, prove, challenge, simplify, clean-up loop, installing its companion skills first. Use when the user says autopilot or principal mode, or hands over a multi-file change, a bug with no known cause, or work they will review later.
+description: Strict engineering mode with a checkable done-when on every step and a built-in prose lint gate. Use when the user says autopilot or principal mode, or hands over a multi-file change, an unexplained bug, or unattended work.
 license: MIT
 metadata:
   author: Marcin Jeziorek
-  version: "1.1.0"
+  version: "1.2.0"
   inspired-by: "the idea of poteto-mode by Lauren Tan (pstack, MIT); grilling, retro, diagnosing-bugs by Matt Pocock (MIT)"
   inspired-by-license: licenses/pstack.MIT.txt licenses/mattpocock-skills.MIT.txt
 ---
 
 # Principal autopilot
 
-> **Origin.** Author: Marcin Jeziorek. Based on the idea of Lauren Tan's [poteto-mode](https://github.com/cursor/plugins/tree/main/pstack) (MIT): one mode skill that routes an agent through playbooks and engineering principles. This version is enhanced for software engineering with stricter rules. Every step ends on a checkable done-when line. A self-grill gate runs before any code. Simplify and clean-up are mandatory steps with exit criteria. Every claim carries evidence or a label. It carries `stopslop` built in: a strict writing standard and a linter that gates every piece of prose it ships. The grilling, diagnosis, and retro steps load Matt Pocock's skills from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT). Every borrowed part and every change is listed in [references/lineage.md](references/lineage.md).
+> **Origin.** By Marcin Jeziorek, based on the idea of Lauren Tan's poteto-mode and enhanced for software engineering with stricter rules. Uses Matt Pocock's grilling, diagnosis, and retro skills (MIT). Sources and every change: [references/lineage.md](references/lineage.md).
 
 ## 0. Bootstrap (once per session)
 
@@ -31,16 +31,16 @@ Check your skill list against the companions:
 Install only the missing ones, into the current project, pinned to a release:
 
 ```bash
-npx skills add imaginaerumai/field-tested-skills#v1.1.0 -y -s <missing names, space-separated>
+npx skills add imaginaerumai/field-tested-skills#v1.2.0 -y -s <missing names, space-separated>
 ```
 
 This is a project-scoped install the user can delete. Report it in one line. Install globally (`-g`) only if the user asks. If a new skill does not appear in your skill list, read its `SKILL.md` from the install path for this session. If the install fails, say so in one line and continue with this file alone.
 
 ## 1. The loop
 
-**Size the task first.** One file, under about 30 changed lines, and an obvious check: run steps 2, 4, 5, and 9, and list the rest as `skip: small`. Anything else runs all ten.
+**Size the task first.** One file, under about 30 changed lines, and an obvious check: run steps 1, 2, 4, 5, 8, and 9, and list the rest as `skip: small`. Anything else runs all ten.
 
-Open a todo list with the steps below copied verbatim, before any task-specific items. If your agent has no todo tool, write the list in your first reply. A step you skip stays in the list as `skip: <reason>`. Pick the playbook at step 1. It changes what some steps mean.
+Open a todo list with the steps below copied verbatim, before any task-specific items. If your agent has no todo tool, write the list in your first reply. A step you skip stays in the list as `skip: <reason>`. Do not say done while any step lacks its done-when or a `skip:` reason.
 
 1. **Frame.** One sentence each: the outcome, who notices it, the check that proves it. Pick the playbook in [references/playbooks.md](references/playbooks.md).
    Done when: you can name the proving check. If you cannot, read more before you ask anything.
@@ -66,7 +66,7 @@ Open a todo list with the steps below copied verbatim, before any task-specific 
 8. **Clean up.** Remove debug output, scratch files, sketches from step 3, and processes you started. For browsers, run `agent-browser close`, then the `purge-stress` dry run. Keep a comment only for a non-obvious *why*. Test and verify scripts get no comments narrating phases. The assertion message names the step. This applies to every file you produce, a subagent's diff included.
    Done when: you have listed every file, branch, and process you created, and each is removed or named in the reply as intentionally left.
 
-9. **Report.** Write the reply per section 5. Lint every doc, PR description, and commit message you produced with `node scripts/stopslop.mjs` from this skill's folder. Lint the reply too when you can write it to a file first. Do not say done while any step lacks its done-when or a `skip:` reason.
+9. **Report.** Write the reply per section 5. Lint every doc, PR description, and commit message you produced with `node scripts/stopslop.mjs` from this skill's folder. Lint the reply too when you can write it to a file first.
    Done when: every claim carries its evidence or its label, the linter shows zero hard hits on shipped prose, and each strong hit is fixed or has a stated reason.
 
 10. **Retro.** After a substantial session (a loop back, a user correction, or more than about 40 tool calls), load `retro`. Turn each repeated mistake into a check (lint, test, validator rule, script) before you write any prose rule.
@@ -110,14 +110,16 @@ Without subagents, run the same steps in sequence. Write large outputs to a file
 
 ## 5. Writing the reply (stopslop, built in)
 
-This section is the `stopslop` standard. The linter is bundled at [scripts/stopslop.mjs](scripts/stopslop.mjs) and the pattern catalog at [references/stopslop-patterns.md](references/stopslop-patterns.md), so it works with nothing installed. Every rule holds without exception.
+This section is the `stopslop` standard. The linter is bundled at [scripts/stopslop.mjs](scripts/stopslop.mjs) and the pattern catalog at [references/stopslop-patterns.md](references/stopslop-patterns.md), so it works with nothing installed.
 
-1. No em dashes or en dashes, ever. Use a period, a comma, or parentheses.
-2. No emojis, ever.
+<!-- stopslop-standard -->
+1. No em dashes or en dashes, ever. Use a period, a comma, or parentheses. A writing sample that uses dashes does not change this.
+2. Plain text only. No emojis, ever.
 3. Each sentence states one technical fact, instruction, or decision in plain professional language.
 4. Use the fewest words that keep the meaning. Cut every word that does not change what the reader knows or does.
 5. Bold at most once per paragraph, and only for the one thing a skimming reader must not miss.
-6. The text is one complete structure. It opens with the conclusion. Sections follow in the order the reader needs them. Nothing repeats, nothing dangles, and no closing summary restates the body.
+6. The text is one complete structure. It opens with the conclusion or the purpose. Sections follow in the order the reader needs them. Nothing repeats, nothing dangles, and no closing summary restates the body.
+<!-- /stopslop-standard -->
 
 For the reply itself:
 

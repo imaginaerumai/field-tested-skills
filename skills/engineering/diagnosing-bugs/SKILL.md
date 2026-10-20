@@ -96,7 +96,7 @@ Do not proceed until you have reproduced **and** minimised.
 
 ## Phase 3: Hypothesise
 
-Generate **3–5 ranked hypotheses** before testing any of them. Single-hypothesis generation anchors on the first plausible idea.
+Generate **3 to 5 ranked hypotheses** before testing any of them. Single-hypothesis generation anchors on the first plausible idea.
 
 Each hypothesis must be **falsifiable**: state the prediction it makes.
 
@@ -150,4 +150,4 @@ Required before declaring done:
 
 Evidence is thin: 6 sessions. Labelled as inference where it is one.
 
-1. **Report at each phase boundary.** In 2 of 6 sessions the user asked "are you stuck?" mid-run, 5 times in total. Inference: the loop was working but silent. Post one line when Phase 1 has a red loop, when a hypothesis is confirmed or killed, and when the fix goes green.
+1. Report at each phase boundary. In 2 of 6 sessions the user asked "are you stuck?" mid-run, 5 times in total. Inference: the loop was working but silent. Post one line when Phase 1 has a red loop, when a hypothesis is confirmed or killed, and when the fix goes green.

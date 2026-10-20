@@ -82,4 +82,8 @@ Write for any agent. Say "load the `x` skill" or "read `skills/.../SKILL.md`", n
 
 ## Prose
 
-Short declarative sentences. No filler, no hype, no em dashes. Every claim carries its evidence or a label (measured, inferred, guess).
+All text follows the `stopslop` standard in `skills/writing/stopslop/SKILL.md`. The validator enforces it. Every claim carries its evidence or a label (measured, inferred, guess).
+
+## Links
+
+A link inside a skill folder points only inside that folder. Anything else uses `https://github.com/imaginaerumai/field-tested-skills/blob/main/<path>`, so it still works after `npx skills add` copies the folder elsewhere.

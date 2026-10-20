@@ -1,6 +1,6 @@
 # Principles
 
-> **Origin.** Condensed from the `principle-*` skills in Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/d457567332aa6989e753ea289f30ea2bfbc80bc0/pstack/skills) (MIT, full text in [`licenses/pstack.MIT.txt`](../../../../licenses/pstack.MIT.txt)). These are summaries in our words, not the originals. The originals at that link carry the full reasoning and examples.
+> **Origin.** Condensed from the `principle-*` skills in Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/d457567332aa6989e753ea289f30ea2bfbc80bc0/pstack/skills) (MIT, full text in [`licenses/pstack.MIT.txt`](https://github.com/imaginaerumai/field-tested-skills/blob/main/licenses/pstack.MIT.txt)). These are summaries in our words, not the originals. The originals at that link carry the full reasoning and examples.
 
 ## Core
 
